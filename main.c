@@ -103,6 +103,13 @@ void dumpList(Node* node) {
 void extract_name(FILE* src, char first[], char last[], int flen, int llen) {
 
 
+
+	for (int k = 0; k < 11; k++) {
+		first[k] = '\0';
+		last[k] = '\0';
+	}
+
+
 	/*
 	This loop iterates over the first name and assigns it to the `first` array until it either hits a space or hits the string length
 	*/
@@ -112,7 +119,7 @@ void extract_name(FILE* src, char first[], char last[], int flen, int llen) {
 		fscanf(src, "%c", &current);
 		first[i] = current;
 		i++;
-	} while (!isspace(current) && i < flen - 1);
+	} while (current != ' ' && i < flen - 1);
 	first[i - 1] = '\0';
 
 
@@ -124,7 +131,7 @@ void extract_name(FILE* src, char first[], char last[], int flen, int llen) {
 		fscanf(src, "%c", &current);
 		last[i] = current;
 		i++;
-	} while (!isspace(current) && i < llen - 1);
+	} while ((current != ' ' && current != '\n') && i < llen - 1);
 	last[i - 1] = '\0';
 
 
@@ -152,6 +159,20 @@ void extract_scores(FILE* src, int scores[], int slen) {
 		We also check that we are within the size of the buffer, as to not overflow it
 	*/
 
+
+	for (i = 0; i < 10; i++) {
+		ret = fscanf(src, "%d", &current);
+		if (ret == EOF || ret == 0) {
+			return;
+		}
+		scores[i] = current;
+	}
+
+	//This is just to consume the newline char at the end of the line, it causes issues
+	fscanf(src, "%c", &current);
+
+
+	/*
 	ret = fscanf(src, "%d", &current);
 
 	while ((!(ret == EOF || ret == 0)) && (i < slen)) {
@@ -159,6 +180,7 @@ void extract_scores(FILE* src, int scores[], int slen) {
 		scores[i] = current;
 		i++;
 	}
+	*/
 
 	return;
 }
@@ -242,7 +264,7 @@ int main(int argc, char* argv[]) {
 
 
 
-	//dumpList(recordList);
+	dumpList(recordList);
 
 	FILE* out = fopen("average.txt", "w");
 
@@ -251,7 +273,7 @@ int main(int argc, char* argv[]) {
 		return 1;
 	}
 
-	outputRecords(recordList, out);
+	outputRecords(recordList, stdout);
 
 	fclose(out);
 
@@ -268,7 +290,7 @@ void outputRecords(Node* root, FILE* outSrc) {
 
 	int i;
 
-	char name[21];
+	char name[25];
 
 
 	for (Node* curr = root; curr != NULL; curr = curr->next) {
