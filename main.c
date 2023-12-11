@@ -169,9 +169,7 @@ void extract_scores(FILE* src, int scores[], int slen) {
 	}
 
 	//This is just to consume the newline char at the end of the line, it causes issues
-	char throwaway;
-	fscanf(src, "%c", &throwaway);
-
+	fscanf(src, "%c", &current);
 
 
 	/*
@@ -306,14 +304,10 @@ void outputRecords(Node* root, FILE* outSrc) {
 		fprintf(outSrc, "%-20s", name);
 
 		for (i = 0; i < 10; i++) {
-			fprintf(outSrc, "%4d ", curr->r.Scores[i]);
+			fprintf(outSrc, "%4d", curr->r.Scores[i]);
 		}
 		fprintf(outSrc, "%10.2lf\n", curr->r.Average);
 	}
 
 
 }
-
-
-
-
