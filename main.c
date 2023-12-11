@@ -169,7 +169,9 @@ void extract_scores(FILE* src, int scores[], int slen) {
 	}
 
 	//This is just to consume the newline char at the end of the line, it causes issues
-	fscanf(src, "%c", &current);
+	char throwaway;
+	fscanf(src, "%c", &throwaway);
+
 
 
 	/*
